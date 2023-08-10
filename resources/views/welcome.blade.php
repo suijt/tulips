@@ -77,6 +77,7 @@
     <script>
         $('#country_id').on('change', function (e) {
             e.preventDefault();
+            
             var countryID = $(this).val();
             $.ajax({
                 type: 'GET',
@@ -93,7 +94,7 @@
         });
         $('#city_id').on('change', function (e) {
             e.preventDefault();
-            $('#population_type').append('<option value="">Population</option>')
+            $('#population_type').empty().append('<option value="">Population</option>')
         });
 
         $('#population_type').on('change', function (e) {
