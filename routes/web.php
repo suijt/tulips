@@ -5,6 +5,8 @@ use App\Http\Controllers\Dashboard\DashboardController;
 use App\Http\Controllers\Country\CountryController;
 use App\Http\Controllers\City\CityController;
 use App\Http\Controllers\Population\PopulationController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,14 +19,39 @@ use App\Http\Controllers\Population\PopulationController;
 |
 */
 
-Route::get('/', function () {
-    $countries = \App\Models\Modules\Country\Country::get();
-    return view('welcome', compact('countries'));
-})->name('home');
 
-Auth::routes();
+//--------------------------------------------------------------------------
+// Home Routes
+//--------------------------------------------------------------------------
+Route::get('/', HomeController::class)->name('home');
+
+//--------------------------------------------------------------------------
+// Auth Routes
+//--------------------------------------------------------------------------
+Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
+
 
 Route::middleware(['sanitize'])->group(function ($router) {
+    //--------------------------------------------------------------------------
+    // Public Routes
+    //--------------------------------------------------------------------------
+
+    //--------------------------------------------------------------------------
+    // City Routes
+    //--------------------------------------------------------------------------
+    $router->prefix('city')->controller(CityController::class)->group(function ($router) {
+        $router->get('', 'index')->name('city.get');
+    });
+    //--------------------------------------------------------------------------
+    // Population Routes
+    //--------------------------------------------------------------------------
+    $router->prefix('population')->controller(PopulationController::class)->group(function ($router) {
+        $router->get('', 'index')->name('population.get');
+    });
+
+
     //--------------------------------------------------------------------------
     // Private Routes
     //--------------------------------------------------------------------------
@@ -46,14 +73,12 @@ Route::middleware(['sanitize'])->group(function ($router) {
         // City Routes
         //--------------------------------------------------------------------------
         $router->prefix('city')->controller(CityController::class)->group(function ($router) {
-            $router->get('', 'index')->name('city.get');
             $router->post('submit', 'store')->name('city.store');
         });
         //--------------------------------------------------------------------------
         // Population Routes
         //--------------------------------------------------------------------------
         $router->prefix('population')->controller(PopulationController::class)->group(function ($router) {
-            $router->get('', 'index')->name('population.get');
             $router->post('submit', 'store')->name('population.store');
         });
     });

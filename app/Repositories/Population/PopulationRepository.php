@@ -18,7 +18,7 @@ class PopulationRepository implements PopulationInterface
 
     function getPopulation(Request $request)
     {
-        return $this->population->where('city', $request->city_id)->get(['name', 'id']);
+        return $this->population->where('city_id', $request->city_id)->get();
     }
 
     function storePopulation(Request $request)

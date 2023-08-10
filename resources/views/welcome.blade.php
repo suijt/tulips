@@ -40,7 +40,7 @@
                             </div>
                             <div class="ageGroupSelect col-4">
                                 <select id="population_type" name="population_type" class="form-control">
-                                    <option value="">Select Age Group</option>
+                                    <option value="">Select</option>
                                 </select>
                             </div>
                         </div>
@@ -55,15 +55,15 @@
                         <tbody>
                         <tr>
                             <td>Old</td>
-                            <td id="oldNumber"></td>
+                            <td id="oldNumber">-</td>
                         </tr>
                         <tr>
                             <td>Young</td>
-                            <td id="youngNumber"></td>
+                            <td id="youngNumber">-</td>
                         </tr>
                         <tr>
                             <td>Child</td>
-                            <td id="childNumber"></td>
+                            <td id="childNumber">-</td>
                         </tr>
 
                         </tbody>
@@ -93,19 +93,29 @@
         });
         $('#city_id').on('change', function (e) {
             e.preventDefault();
-            $('#population_type').append('<option value="old">Old</option>', '<option value="young">Young</option>', '<option value="child">Child</option>')
+            $('#population_type').append('<option value="">Population</option>')
         });
 
         $('#population_type').on('change', function (e) {
             e.preventDefault();
             var cityId = $('#city_id').val();
-            var ageGroup = $(this).val();
             $.ajax({
                 type: 'GET',
                 url: "{{route('population.get')}}",
-                data: {'city_id': cityId, 'age_group': ageGroup},
+                data: {'city_id': cityId},
                 success: function (res) {
-                    console.log(res);
+                    $.each(res, function (key, value) {
+                        if (value.type == 'old') {
+                            $("#oldNumber").empty().append(value.number);
+                        }
+                        if (value.type == 'young') {
+                            $("#youngNumber").empty().append(value.number);
+                        }
+                        if (value.type == 'child') {
+                            $("#childNumber").empty().append(value.number);
+                        }
+
+                    });
                 }
             });
         });

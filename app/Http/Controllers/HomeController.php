@@ -2,27 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Contracts\CountryInterface;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @var CountryInterface
      */
-    public function __construct()
+    protected $countries;
+
+    /**
+     * @param CountryInterface $countries
+     */
+    public function __construct(CountryInterface $countries)
     {
-        $this->middleware('auth');
+        $this->countries = $countries;
     }
 
     /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * Handle the incoming request.
      */
-    public function index()
+    public function __invoke()
     {
-        return view('home');
+        $countries = $this->countries->getAllCountries();
+
+        return view('welcome', compact('countries'));
+
     }
 }

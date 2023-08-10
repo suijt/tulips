@@ -9,8 +9,14 @@ use Illuminate\Http\Request;
 
 class CityController extends Controller
 {
+    /**
+     * @var CityInterface
+     */
     protected $city;
 
+    /**
+     * @param CityInterface $city
+     */
     public function __construct(CityInterface $city)
     {
         $this->city = $city;
@@ -24,6 +30,10 @@ class CityController extends Controller
         return response()->json($this->city->getAllCitiesByCountry($request));
     }
 
+    /**
+     * @param CityRequest $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(CityRequest $request)
     {
         $city = $this->city->storeCity($request);

@@ -5,7 +5,9 @@
         <div class="row justify-content-center">
             <div class="col-md-8">
                 <div class="card">
-                    <div class="card-header">{{ __('Dashboard') }}</div>
+                    <div class="card-header">{{ __('Dashboard') }}
+                        <a href="{{route('home')}}" class="btn btn-outline-danger" id="city">Home</a>
+                    </div>
                     <div class="card-body">
                         <div class="btn-group mb-10">
                             <a href="{{route('dashboard','country')}}" class="btn btn-outline-primary" id="country">Add
@@ -208,7 +210,6 @@
                 url: "{{route('city.get')}}",
                 data: {'country_id': countryID},
                 success: function (res) {
-                    // $('#city').html(result);
                     $.each(res, function (key, value) {
                         $("#city_id").append('<option value="' + value
                             .id + '">' + value.name + '</option>');
