@@ -34,7 +34,6 @@
                 <ul class="navbar-nav me-auto">
 
                 </ul>
-
                 <!-- Right Side Of Navbar -->
                 <ul class="navbar-nav ms-auto">
                     <!-- Authentication Links -->
@@ -71,8 +70,11 @@
     </nav>
 
     <main class="py-4">
+        @include('flash-message')
         @yield('content')
     </main>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+@yield('scripts')
 </body>
 </html>

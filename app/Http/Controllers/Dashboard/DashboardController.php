@@ -2,16 +2,33 @@
 
 namespace App\Http\Controllers\Dashboard;
 
+use App\Contracts\CountryInterface;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
     /**
+     * @var CountryInterface
+     */
+    protected $countries;
+
+    /**
+     * @param CountryInterface $countries
+     */
+    public function __construct(CountryInterface $countries)
+    {
+        $this->countries = $countries;
+    }
+
+    /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function index($formType = 'country')
     {
-        return view('dashboard');
+        $countries = '';
+        if ($formType != 'country') {
+            $countries = $this->countries->getAllCountries();
+        }
+        return view('dashboard.index', compact('countries', 'formType'));
     }
 }
